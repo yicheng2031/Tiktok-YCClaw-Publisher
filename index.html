@@ -75,87 +75,89 @@
           </div>
         </div>
 
-        <div class="card">
-          <h2>2) Legal & Links (for review)</h2>
-          <p>These pages are used for Terms/Privacy and Web URL fields in the TikTok Developer Portal.</p>
-          <div class="footer-links">
-            <a class="btn" href="./terms-of-service.html" style="text-decoration:none;">Terms of Service</a>
-            <a class="btn" href="./privacy-policy.html" style="text-decoration:none;">Privacy Policy</a>
-          </div>
+        <div>
+          <div class="card">
+            <h2>2) Post video & check status (no terminal)</h2>
+            <p>
+              Start the local demo backend, then use the buttons below to record an end-to-end flow without leaving the browser.
+              The browser cannot read local files directly, so provide an <b>absolute path</b> to a local video file and the local backend will upload it.
+            </p>
 
-          <h2 style="margin-top:16px;">Local backend (for demo recording)</h2>
-          <p>
-            Start the local demo backend, then use the buttons below to show an end-to-end flow in your review video
-            without leaving the browser.
-          </p>
-          <div class="btns">
-            <button class="btn" id="btnHealth">Check localhost health</button>
-            <button class="btn" id="btnCreator">Query creator info</button>
-          </div>
-          <div style="margin-top:10px;">
-            <label>Local backend response (http://localhost:8787)</label>
-            <div id="localRespHome" class="card mono" style="padding:12px; border-radius:12px;">(not called)</div>
-          </div>
+            <div class="btns">
+              <button class="btn" id="btnHealth">Check localhost health</button>
+              <button class="btn" id="btnCreator">Query creator info</button>
+            </div>
+            <div style="margin-top:10px;">
+              <label>Local backend response (http://localhost:8787)</label>
+              <div id="localRespHome" class="card mono" style="padding:12px; border-radius:12px;">(not called)</div>
+            </div>
 
-          <h2 style="margin-top:16px;">Post video & check status (no terminal)</h2>
-          <p>
-            The browser cannot read local files directly. Provide an <b>absolute path</b> to a local video file and the local backend will upload it.
-          </p>
-          <div class="row">
-            <div>
-              <label for="videoPath">Video absolute path</label>
-              <input id="videoPath" type="text" placeholder="/absolute/path/to/demo.mp4" autocomplete="off" />
-            </div>
-            <div>
-              <label for="videoTitle">Title</label>
-              <input id="videoTitle" type="text" placeholder="YCClaw demo" autocomplete="off" />
-            </div>
-          </div>
-          <div class="row" style="margin-top:10px;">
-            <div>
-              <label for="privacyLevel">privacy_level</label>
-              <select id="privacyLevel">
-                <option value="SELF_ONLY">SELF_ONLY (recommended)</option>
-                <option value="PUBLIC_TO_EVERYONE">PUBLIC_TO_EVERYONE</option>
-                <option value="MUTUAL_FOLLOW_FRIENDS">MUTUAL_FOLLOW_FRIENDS</option>
-              </select>
-            </div>
-            <div>
-              <label for="mimeType">mime_type</label>
-              <input id="mimeType" type="text" value="video/mp4" autocomplete="off" />
-            </div>
-          </div>
-          <div class="btns">
-            <button class="btn primary" id="btnPostVideo">Post video via localhost</button>
-          </div>
-
-          <div class="row" style="margin-top:12px;">
-            <div>
-              <label for="publishId">publish_id</label>
-              <input id="publishId" type="text" placeholder="v_pub_file~v2..." autocomplete="off" />
-            </div>
-            <div style="display:flex; align-items:flex-end;">
-              <div class="btns" style="margin-top:0;">
-                <button class="btn" id="btnFetchStatus">Fetch status</button>
+            <div class="row" style="margin-top:14px;">
+              <div>
+                <label for="videoPath">Video absolute path</label>
+                <input id="videoPath" type="text" placeholder="/absolute/path/to/demo.mp4" autocomplete="off" />
+              </div>
+              <div>
+                <label for="videoTitle">Title</label>
+                <input id="videoTitle" type="text" placeholder="YCClaw demo" autocomplete="off" />
               </div>
             </div>
-          </div>
-          <div style="margin-top:10px;">
-            <label>Posting / status response</label>
-            <div id="postRespHome" class="card mono" style="padding:12px; border-radius:12px;">(not called)</div>
-            <p style="margin:8px 0 0; color:#b9bac4;">
-              Tip: After posting, we auto-fill publish_id if available. You can then click “Fetch status” repeatedly.
-            </p>
+            <div class="row" style="margin-top:10px;">
+              <div>
+                <label for="privacyLevel">privacy_level</label>
+                <select id="privacyLevel">
+                  <option value="SELF_ONLY">SELF_ONLY (recommended)</option>
+                  <option value="PUBLIC_TO_EVERYONE">PUBLIC_TO_EVERYONE</option>
+                  <option value="MUTUAL_FOLLOW_FRIENDS">MUTUAL_FOLLOW_FRIENDS</option>
+                </select>
+              </div>
+              <div>
+                <label for="mimeType">mime_type</label>
+                <input id="mimeType" type="text" value="video/mp4" autocomplete="off" />
+              </div>
+            </div>
+            <div class="btns">
+              <button class="btn primary" id="btnPostVideo">Post video via localhost</button>
+            </div>
+
+            <div class="row" style="margin-top:12px;">
+              <div>
+                <label for="publishId">publish_id</label>
+                <input id="publishId" type="text" placeholder="v_pub_file~v2..." autocomplete="off" />
+              </div>
+              <div style="display:flex; align-items:flex-end;">
+                <div class="btns" style="margin-top:0;">
+                  <button class="btn" id="btnFetchStatus">Fetch status</button>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:10px;">
+              <label>Posting / status response</label>
+              <div id="postRespHome" class="card mono" style="padding:12px; border-radius:12px;">(not called)</div>
+              <p style="margin:8px 0 0; color:#b9bac4;">
+                Tip: After posting, we auto-fill publish_id if available. You can then click “Fetch status” repeatedly.
+              </p>
+            </div>
           </div>
 
-          <h2 style="margin-top:16px;">3) What this demo includes / excludes</h2>
-          <ul>
-            <li><b>Includes:</b> OAuth authorize URL generation and a callback page that extracts <span class="mono">code</span>.</li>
-            <li><b>Excludes:</b> Token exchange (needs server to protect client_secret) and actual posting calls.</li>
-          </ul>
-          <p>
-            For the demo video, you can run a small backend (local or hosted) that receives the code, exchanges tokens, and calls Content Posting API.
-          </p>
+          <div class="card" style="margin-top:14px;">
+            <h2>3) Legal & Links (for review)</h2>
+            <p>These pages are used for Terms/Privacy and Web URL fields in the TikTok Developer Portal.</p>
+            <div class="footer-links">
+              <a class="btn" href="./terms-of-service.html" style="text-decoration:none;">Terms of Service</a>
+              <a class="btn" href="./privacy-policy.html" style="text-decoration:none;">Privacy Policy</a>
+            </div>
+
+            <h2 style="margin-top:16px;">4) What this demo includes / excludes</h2>
+            <ul>
+              <li><b>Includes:</b> OAuth authorize URL generation and a callback page that extracts <span class="mono">code</span>.</li>
+              <li><b>Includes:</b> Local backend exchange, creator info query, video upload, status fetch.</li>
+              <li><b>Excludes:</b> A full product UI; this is a review-focused demo.</li>
+            </ul>
+            <p>
+              For app review, keep the video focused on the end-to-end flow: authorize → exchange → post → status.
+            </p>
+          </div>
         </div>
       </div>
     </div>
