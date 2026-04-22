@@ -24,7 +24,7 @@ Set these env vars:
 ```bash
 export TIKTOK_CLIENT_KEY="YOUR_CLIENT_KEY"
 export TIKTOK_CLIENT_SECRET="YOUR_CLIENT_SECRET"
-export TIKTOK_REDIRECT_URI="https://yicheng2031.github.io/Tiktok-YCClaw-Publisher/callback.html"
+export TIKTOK_REDIRECT_URI="https://yicheng2031.github.io/Tiktok-YCClaw-Publisher/callback/"
 ```
 
 ## 3) Start server
@@ -50,7 +50,7 @@ curl http://localhost:8787/health
 ```bash
 curl -X POST http://localhost:8787/oauth/exchange \
   -H "Content-Type: application/json" \
-  -d '{"code":"PASTE_CODE_HERE","redirect_uri":"https://yicheng2031.github.io/Tiktok-YCClaw-Publisher/callback.html"}'
+  -d '{"code":"PASTE_CODE_HERE","redirect_uri":"https://yicheng2031.github.io/Tiktok-YCClaw-Publisher/callback/"}'
 ```
 
 ## 5) Post a video (direct post)

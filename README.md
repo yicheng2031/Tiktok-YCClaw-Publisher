@@ -7,10 +7,9 @@ This repo hosts a small **static** demo site for TikTok app review:
 
 ## Pages
 - `/` → `index.html`
-- `/callback.html`
+- `/callback/` (recommended redirect URI)
 - `/terms-of-service.html`
 - `/privacy-policy.html`
 
 ## Notes
 This is a static site. Exchanging `code` for tokens requires a backend server to securely store `client_secret` and `refresh_token`.
-

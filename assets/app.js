@@ -81,8 +81,10 @@ function goAuthorize() {
 }
 
 function init() {
-  // 自动填 redirect_uri（以当前 origin + callback.html）
-  const autoRedirect = `${window.location.origin}${window.location.pathname.replace(/\/index\.html$/, "/callback.html").replace(/\/$/, "/callback.html")}`;
+  // 自动填 redirect_uri（推荐使用以 / 结尾的目录路径，避免 TikTok 对 redirect URI 的严格匹配导致的误报）
+  // 例如：https://<host>/<repo>/callback/
+  const basePath = window.location.pathname.replace(/\/index\.html$/, "/").replace(/\/$/, "/");
+  const autoRedirect = `${window.location.origin}${basePath}callback/`;
   if (qs("redirectUri") && !qs("redirectUri").value) {
     qs("redirectUri").value = autoRedirect;
   }

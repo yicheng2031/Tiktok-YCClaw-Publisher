@@ -275,6 +275,6 @@ app.listen(PORT, () => {
   if (missing.length) {
     console.log("Missing env vars:", missing.join(", "));
     console.log("Example:");
-    console.log("  export TIKTOK_CLIENT_KEY=... TIKTOK_CLIENT_SECRET=... TIKTOK_REDIRECT_URI=https://yicheng2031.github.io/Tiktok-YCClaw-Publisher/callback.html");
+    console.log("  export TIKTOK_CLIENT_KEY=... TIKTOK_CLIENT_SECRET=... TIKTOK_REDIRECT_URI=https://yicheng2031.github.io/Tiktok-YCClaw-Publisher/callback/");
   }
 });
