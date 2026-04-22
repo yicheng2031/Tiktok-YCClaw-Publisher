@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YCClaw Publisher Demo</title>
+    <link rel="stylesheet" href="./assets/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div>
+          <div class="title">YCClaw Publisher — TikTok Demo</div>
+          <div class="subtitle">GitHub Pages demo for Login Kit + Content Posting API review video</div>
+        </div>
+        <div id="cfgStatus"></div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h2>1) Configure OAuth (Login Kit)</h2>
+          <p>
+            This page builds the TikTok OAuth URL for <span class="mono">https://www.tiktok.com/v2/auth/authorize/</span>.
+            For app review, record a demo video showing: authorize → callback receives <span class="mono">code</span> → your backend exchanges token → publish.
+          </p>
+
+          <div class="row">
+            <div>
+              <label for="clientKey">Client Key (from TikTok Developer Portal)</label>
+              <input id="clientKey" type="text" placeholder="e.g., awx123..." autocomplete="off" />
+            </div>
+            <div>
+              <label for="redirectUri">Redirect URI (must be registered in Login Kit)</label>
+              <input id="redirectUri" type="text" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:10px;">
+            <div>
+              <label>Scopes (select what you applied for)</label>
+              <div class="row" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+                <label class="pill" style="justify-content:flex-start;">
+                  <input type="checkbox" name="scope" value="video.publish" />
+                  video.publish
+                </label>
+                <label class="pill" style="justify-content:flex-start;">
+                  <input type="checkbox" name="scope" value="video.upload" />
+                  video.upload
+                </label>
+              </div>
+              <p style="margin:8px 0 0;">Tip: keep scopes consistent with your app review text.</p>
+            </div>
+
+            <div>
+              <label for="disableAutoAuth">disable_auto_auth</label>
+              <select id="disableAutoAuth">
+                <option value="1">1 (Always show consent page — recommended for review video)</option>
+                <option value="0">0 (Skip consent page for valid sessions)</option>
+              </select>
+              <p style="margin:8px 0 0;">We keep it as 1 so your demo video clearly shows the consent step.</p>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;">
+            <label>Generated Authorization URL</label>
+            <div class="card" style="padding:12px; border-radius:12px;">
+              <div id="authUrl" class="mono">Fill Client Key, Redirect URI, and select at least one scope.</div>
+            </div>
+          </div>
+
+          <div class="btns">
+            <button class="btn primary" id="btnAuth" disabled>Continue with TikTok</button>
+            <button class="btn" id="btnCopy">Copy URL</button>
+            <a class="btn" href="./callback.html" style="text-decoration:none; display:inline-flex; align-items:center;">Open callback page</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>2) Legal & Links (for review)</h2>
+          <p>These pages are used for Terms/Privacy and Web URL fields in the TikTok Developer Portal.</p>
+          <div class="footer-links">
+            <a class="btn" href="./terms-of-service.html" style="text-decoration:none;">Terms of Service</a>
+            <a class="btn" href="./privacy-policy.html" style="text-decoration:none;">Privacy Policy</a>
+          </div>
+
+          <h2 style="margin-top:16px;">3) What this demo includes / excludes</h2>
+          <ul>
+            <li><b>Includes:</b> OAuth authorize URL generation and a callback page that extracts <span class="mono">code</span>.</li>
+            <li><b>Excludes:</b> Token exchange (needs server to protect client_secret) and actual posting calls.</li>
+          </ul>
+          <p>
+            For the demo video, you can run a small backend (local or hosted) that receives the code, exchanges tokens, and calls Content Posting API.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script src="./assets/app.js"></script>
+  </body>
+</html>
+

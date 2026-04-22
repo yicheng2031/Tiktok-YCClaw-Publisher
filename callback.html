@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YCClaw Publisher — OAuth Callback</title>
+    <link rel="stylesheet" href="./assets/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div>
+          <div class="title">OAuth Callback</div>
+          <div class="subtitle">This page reads TikTok redirect query params and shows them for your backend.</div>
+        </div>
+        <a class="btn" href="./index.html" style="text-decoration:none;">Back</a>
+      </div>
+
+      <div class="card">
+        <h2>Query Parameters</h2>
+        <p>After TikTok redirects back, you should see <span class="mono">code</span>, <span class="mono">scopes</span>, and <span class="mono">state</span> here.</p>
+
+        <div class="row">
+          <div>
+            <label>code</label>
+            <div id="code" class="card mono" style="padding:12px; border-radius:12px;">(empty)</div>
+          </div>
+          <div>
+            <label>state</label>
+            <div id="state" class="card mono" style="padding:12px; border-radius:12px;">(empty)</div>
+            <p id="stateHint" style="margin:8px 0 0;"></p>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <label>scopes</label>
+          <div id="scopes" class="card mono" style="padding:12px; border-radius:12px;">(empty)</div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <label>error / error_description</label>
+          <div id="error" class="card mono" style="padding:12px; border-radius:12px;">(none)</div>
+        </div>
+
+        <h2 style="margin-top:16px;">Copy payload for your backend</h2>
+        <p>Use this JSON as the input to your server endpoint that exchanges code → tokens.</p>
+        <div id="payload" class="card mono" style="padding:12px; border-radius:12px;">{}</div>
+
+        <div class="btns">
+          <button class="btn primary" id="btnCopy">Copy JSON</button>
+          <button class="btn" id="btnClear">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function $(id) { return document.getElementById(id); }
+      function text(el, v) { el.textContent = v || "(empty)"; }
+
+      function init() {
+        const url = new URL(window.location.href);
+        const code = url.searchParams.get("code") || "";
+        const state = url.searchParams.get("state") || "";
+        const scopes = url.searchParams.get("scopes") || "";
+        const error = url.searchParams.get("error") || "";
+        const errorDesc = url.searchParams.get("error_description") || "";
+
+        text($("code"), code);
+        text($("state"), state);
+        text($("scopes"), scopes);
+        $("error").textContent = error ? `${error}\n${errorDesc}` : "(none)";
+
+        const lastState = localStorage.getItem("ycclaw_last_state");
+        if (lastState && state) {
+          $("stateHint").textContent = (lastState === state)
+            ? "State matches last generated value (demo check passed)."
+            : "Warning: state does NOT match last generated value.";
+          $("stateHint").style.color = (lastState === state) ? "#b9bac4" : "#ffcc00";
+        }
+
+        const cfgRaw = localStorage.getItem("ycclaw_demo_cfg");
+        const cfg = cfgRaw ? JSON.parse(cfgRaw) : {};
+        const payload = {
+          code,
+          state,
+          scopes,
+          redirect_uri: cfg.redirectUri || "",
+        };
+        $("payload").textContent = JSON.stringify(payload, null, 2);
+
+        $("btnCopy").addEventListener("click", async () => {
+          await navigator.clipboard.writeText($("payload").textContent);
+          $("btnCopy").textContent = "Copied";
+          setTimeout(() => ($("btnCopy").textContent = "Copy JSON"), 900);
+        });
+        $("btnClear").addEventListener("click", () => {
+          window.history.replaceState({}, document.title, window.location.pathname);
+          init();
+        }, { once: true });
+      }
+      document.addEventListener("DOMContentLoaded", init);
+    </script>
+  </body>
+</html>
+
