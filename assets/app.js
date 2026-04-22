@@ -128,6 +128,59 @@ function init() {
 
   qs("btnHealth")?.addEventListener("click", () => callLocal("/health"));
   qs("btnCreator")?.addEventListener("click", () => callLocal("/creator_info", {}));
+
+  async function callLocalTo(targetId, path, body) {
+    const out = qs(targetId);
+    if (!out) return;
+    out.textContent = `(calling http://localhost:8787${path} ...)`;
+    try {
+      const resp = await fetch(`http://localhost:8787${path}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body || {})
+      });
+      const txt = await resp.text();
+      let parsed = null;
+      try { parsed = JSON.parse(txt); } catch {}
+      out.textContent = parsed ? JSON.stringify(parsed, null, 2) : txt;
+      return { ok: resp.ok, data: parsed, raw: txt };
+    } catch (e) {
+      out.textContent = `Request failed: ${e?.message || e}`;
+      return { ok: false, data: null, raw: String(e) };
+    }
+  }
+
+  // Post video
+  qs("btnPostVideo")?.addEventListener("click", async () => {
+    const videoPath = qs("videoPath")?.value?.trim();
+    const title = qs("videoTitle")?.value?.trim() || "YCClaw demo";
+    const privacy = qs("privacyLevel")?.value || "SELF_ONLY";
+    const mime = qs("mimeType")?.value?.trim() || "video/mp4";
+    if (!videoPath) {
+      const out = qs("postRespHome");
+      if (out) out.textContent = "Please provide an absolute video path first.";
+      return;
+    }
+    const r = await callLocalTo("postRespHome", "/post/video", {
+      video_path: videoPath,
+      title,
+      privacy_level: privacy,
+      mime_type: mime
+    });
+    const publishId = r?.data?.publish_id;
+    if (publishId && qs("publishId")) qs("publishId").value = publishId;
+  });
+
+  // Fetch status
+  qs("btnFetchStatus")?.addEventListener("click", async () => {
+    const publishId = qs("publishId")?.value?.trim();
+    if (!publishId) {
+      const out = qs("postRespHome");
+      if (out) out.textContent = "Please provide publish_id first.";
+      return;
+    }
+    await callLocalTo("postRespHome", "/status", { publish_id: publishId });
+  });
 }
 
 document.addEventListener("DOMContentLoaded", init);

@@ -55,6 +55,7 @@
         <div style="margin-top:12px;">
           <label>Local backend response (http://localhost:8787)</label>
           <div id="localResp" class="card mono" style="padding:12px; border-radius:12px;">(not called)</div>
+          <p id="exchangeHint" style="margin:8px 0 0; color:#b9bac4;"></p>
           <p style="margin:8px 0 0; color:#b9bac4;">
             Tip: Start the local demo backend first, then click “Exchange via localhost”. This will POST to <span class="mono">/oauth/exchange</span>.
           </p>
@@ -111,6 +112,7 @@
         $("btnExchange").addEventListener("click", async () => {
           const btn = $("btnExchange");
           const out = $("localResp");
+          const hint = $("exchangeHint");
           if (!code) {
             out.textContent = "No code found. Please complete TikTok authorization first.";
             return;
@@ -118,6 +120,7 @@
           btn.disabled = true;
           btn.textContent = "Exchanging...";
           out.textContent = "(calling http://localhost:8787/oauth/exchange ...)";
+          if (hint) hint.textContent = "";
           try {
             const resp = await fetch("http://localhost:8787/oauth/exchange", {
               method: "POST",
@@ -130,11 +133,23 @@
             } catch {
               out.textContent = txt;
             }
+
+            // 如果 exchange 成功，禁用按钮避免重复使用同一个 code（code 只能用一次且有效期很短）
+            if (resp.ok) {
+              btn.textContent = "Exchanged (done)";
+              btn.disabled = true;
+              if (hint) hint.textContent = "Exchange succeeded. This code cannot be reused. If you need to retry, restart authorization to get a new code.";
+            } else {
+              // 失败的话允许重试，但给出提示
+              btn.disabled = false;
+              btn.textContent = "Exchange via localhost";
+              if (hint) hint.textContent = "Exchange failed. If the error says code expired/invalid_grant, restart authorization to get a new code.";
+            }
           } catch (e) {
             out.textContent = `Request failed: ${e?.message || e}`;
+            if (hint) hint.textContent = "Request failed. Ensure the local backend is running on http://localhost:8787.";
           } finally {
-            btn.disabled = false;
-            btn.textContent = "Exchange via localhost";
+            // 成功时已在上面禁用；失败时才在上面恢复
           }
         });
       }
@@ -142,4 +157,3 @@
     </script>
   </body>
 </html>
-
