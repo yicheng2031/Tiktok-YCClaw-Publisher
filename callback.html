@@ -48,7 +48,16 @@
 
         <div class="btns">
           <button class="btn primary" id="btnCopy">Copy JSON</button>
+          <button class="btn" id="btnExchange">Exchange via localhost</button>
           <button class="btn" id="btnClear">Clear</button>
+        </div>
+
+        <div style="margin-top:12px;">
+          <label>Local backend response (http://localhost:8787)</label>
+          <div id="localResp" class="card mono" style="padding:12px; border-radius:12px;">(not called)</div>
+          <p style="margin:8px 0 0; color:#b9bac4;">
+            Tip: Start the local demo backend first, then click “Exchange via localhost”. This will POST to <span class="mono">/oauth/exchange</span>.
+          </p>
         </div>
       </div>
     </div>
@@ -97,9 +106,39 @@
           window.history.replaceState({}, document.title, window.location.pathname);
           init();
         }, { once: true });
+
+        $("btnExchange").addEventListener("click", async () => {
+          const btn = $("btnExchange");
+          const out = $("localResp");
+          if (!code) {
+            out.textContent = "No code found. Please complete TikTok authorization first.";
+            return;
+          }
+          btn.disabled = true;
+          btn.textContent = "Exchanging...";
+          out.textContent = "(calling http://localhost:8787/oauth/exchange ...)";
+          try {
+            const resp = await fetch("http://localhost:8787/oauth/exchange", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ code, redirect_uri: payload.redirect_uri })
+            });
+            const txt = await resp.text();
+            // 尝试格式化 JSON
+            try {
+              out.textContent = JSON.stringify(JSON.parse(txt), null, 2);
+            } catch {
+              out.textContent = txt;
+            }
+          } catch (e) {
+            out.textContent = `Request failed: ${e?.message || e}`;
+          } finally {
+            btn.disabled = false;
+            btn.textContent = "Exchange via localhost";
+          }
+        });
       }
       document.addEventListener("DOMContentLoaded", init);
     </script>
   </body>
 </html>
-
