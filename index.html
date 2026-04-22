@@ -83,6 +83,20 @@
             <a class="btn" href="./privacy-policy.html" style="text-decoration:none;">Privacy Policy</a>
           </div>
 
+          <h2 style="margin-top:16px;">Local backend (for demo recording)</h2>
+          <p>
+            Start the local demo backend, then use the buttons below to show an end-to-end flow in your review video
+            without leaving the browser.
+          </p>
+          <div class="btns">
+            <button class="btn" id="btnHealth">Check localhost health</button>
+            <button class="btn" id="btnCreator">Query creator info</button>
+          </div>
+          <div style="margin-top:10px;">
+            <label>Local backend response (http://localhost:8787)</label>
+            <div id="localRespHome" class="card mono" style="padding:12px; border-radius:12px;">(not called)</div>
+          </div>
+
           <h2 style="margin-top:16px;">3) What this demo includes / excludes</h2>
           <ul>
             <li><b>Includes:</b> OAuth authorize URL generation and a callback page that extracts <span class="mono">code</span>.</li>
@@ -98,4 +112,3 @@
     <script src="./assets/app.js"></script>
   </body>
 </html>
-

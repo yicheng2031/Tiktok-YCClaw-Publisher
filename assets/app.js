@@ -102,7 +102,30 @@ function init() {
     qs("btnCopy").textContent = "Copied";
     setTimeout(() => (qs("btnCopy").textContent = "Copy URL"), 900);
   });
+
+  async function callLocal(path, body) {
+    const out = qs("localRespHome");
+    if (!out) return;
+    out.textContent = `(calling http://localhost:8787${path} ...)`;
+    try {
+      const resp = await fetch(`http://localhost:8787${path}`, {
+        method: body ? "POST" : "GET",
+        headers: body ? { "Content-Type": "application/json" } : undefined,
+        body: body ? JSON.stringify(body) : undefined
+      });
+      const txt = await resp.text();
+      try {
+        out.textContent = JSON.stringify(JSON.parse(txt), null, 2);
+      } catch {
+        out.textContent = txt;
+      }
+    } catch (e) {
+      out.textContent = `Request failed: ${e?.message || e}`;
+    }
+  }
+
+  qs("btnHealth")?.addEventListener("click", () => callLocal("/health"));
+  qs("btnCreator")?.addEventListener("click", () => callLocal("/creator_info", {}));
 }
 
 document.addEventListener("DOMContentLoaded", init);
-
